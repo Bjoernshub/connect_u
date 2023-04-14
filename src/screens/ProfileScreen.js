@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext  } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { View, Text, Button, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
@@ -47,6 +47,12 @@ const ProfileScreen = () => {
 
   console.log('Interests in ProfileScreen:', interests);
 
+  const onPressEditInterests = () => {
+    navigation.navigate('EditInterests', {
+      selectedInterests: interests,
+    });
+  };
+
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={pickImage}>
@@ -84,10 +90,10 @@ const ProfileScreen = () => {
       <Text style={styles.title}>Interest tags</Text>
       <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
         <Text style={styles.description}>{interests.join(', ')}</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('EditInterests')}>
+        <TouchableOpacity onPress={onPressEditInterests}>
           <MaterialCommunityIcons name="pencil" size={24} color="black" />
         </TouchableOpacity>
-      </View>   
+      </View>
       <Text style={styles.title}>Social media links</Text>
       <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
         <Text style={styles.description}>links</Text>
@@ -95,40 +101,41 @@ const ProfileScreen = () => {
           <MaterialCommunityIcons name="pencil" size={24} color="black" />
         </TouchableOpacity>
       </View>
-    </View>
+  </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
   },
   profileImage: {
     width: 150,
     height: 150,
     borderRadius: 75,
-    marginBottom: 20,
+    marginBottom: 10,
   },
   username: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 5,
   },
   title: {
     fontSize: 18,
     fontWeight: 'bold',
     alignSelf: 'flex-start',
     marginLeft: 20,
-    marginTop: 10,
+    marginTop: 20,
   },
   description: {
     fontSize: 16,
-    alignSelf: 'flex-start',
+    marginTop: 5,
     marginLeft: 20,
-    marginBottom: 10,
+    marginRight: 5,
   },
 });
 
-export default ProfileScreen;
+export default ProfileScreen;  
