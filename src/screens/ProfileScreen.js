@@ -9,7 +9,7 @@ import InterestsContext from '../context/InterestsContext';
 const ProfileScreen = () => {
   const navigation = useNavigation();
   const [image, setImage] = useState(null);
-  const { interests, updateInterests } = useContext(InterestsContext);
+  const { interests } = useContext(InterestsContext);
 
   useEffect(() => {
     (async () => {
@@ -45,6 +45,7 @@ const ProfileScreen = () => {
     });
   }, [navigation]);
 
+  console.log('Interests in ProfileScreen:', interests);
 
   return (
     <View style={styles.container}>
@@ -80,7 +81,6 @@ const ProfileScreen = () => {
           <MaterialCommunityIcons name="pencil" size={24} color="black" />
         </TouchableOpacity>
       </View>
-      
       <Text style={styles.title}>Interest tags</Text>
       <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
         <Text style={styles.description}>{interests.join(', ')}</Text>
