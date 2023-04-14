@@ -273,8 +273,9 @@ const categories = [
   },
 ];
 
-const EditInterestsScreen = ({ navigation  }) => {
+const EditInterestsScreen = ({ route, navigation  }) => {
   const { interests, updateInterests } = useContext(InterestsContext);
+  const { selectedInterests: initialSelectedInterests } = route.params;
   const [selectedInterests, setSelectedInterests] = useState(interests);
 
   console.log('Initial interests in EditInterestsScreen:', interests);
@@ -295,8 +296,16 @@ const EditInterestsScreen = ({ navigation  }) => {
   };
 
   useEffect(() => {
-    navigation.setParams({ onSaveButtonPress });
-  }, [selectedInterests]);
+    const unsubscribe = navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={onSaveButtonPress} style={styles.saveButton}>
+          <Text style={styles.saveButtonText}>Save</Text>
+        </TouchableOpacity>
+      ),
+    });
+
+    return unsubscribe;
+  }, [navigation, onSaveButtonPress]);
 
   return (
     <ScrollView>
