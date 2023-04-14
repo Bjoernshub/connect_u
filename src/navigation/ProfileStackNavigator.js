@@ -26,13 +26,16 @@ const ProfileStackNavigator = () => {
       <Stack.Screen
         name="EditInterests"
         component={EditInterestsScreen}
-        options={({ navigation }) => ({
+        options={({ navigation, route }) => ({
           headerRight: () => (
             <TouchableOpacity
-              onPress={() => navigation.navigate('NestedProfile', { saveInterests: true })}
-              style={styles.saveButton}
+              onPress={() => {
+                route.params?.onSaveButtonPress();
+                navigation.goBack();
+              }}
+              style={{ marginRight: 15 }}
             >
-              <Text style={styles.saveButtonText}>Save</Text>
+              <Text style={{ color: 'blue', fontSize: 16 }}>Save</Text>
             </TouchableOpacity>
           ),
         })}
