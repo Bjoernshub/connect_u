@@ -1,31 +1,29 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { useNavigation, useRoute  } from '@react-navigation/native';
 
 const EditAboutYouScreen = () => {
-  const [aboutYouText, setAboutYouText] = useState('');
   const navigation = useNavigation();
+  const route = useRoute();
+  const [aboutYouText, setAboutYouText] = useState('');
 
-
-  const onSaveButtonPress = () => {
-      // Save the aboutYouText or any other action you want to perform before navigating
-      navigation.goBack();
-    };
-
+  const onSave = () => {
+    console.log('About you text: ', aboutYouText);
+    route.params.updateAboutYou(aboutYouText);
+    navigation.goBack();
+  };
 
   return (
     <View style={styles.container}>
-      <Text>Edit About You Screen</Text>
+      <Text style={styles.title}>About you</Text>
       <TextInput
         style={styles.input}
         multiline
         onChangeText={setAboutYouText}
         value={aboutYouText}
-        placeholder="Write something about yourself..."
+        placeholder="Write a brief description about yourself"
       />
-      <TouchableOpacity style={styles.saveButton} onPress={onSaveButtonPress}>
-        <Text style={styles.saveButtonText}>Save</Text>
-      </TouchableOpacity>
+      <Button title="Save" onPress={onSave} />
     </View>
   );
 };
@@ -33,31 +31,24 @@ const EditAboutYouScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 20,
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
   },
   input: {
-    width: '100%',
+    width: '80%',
     height: 150,
     borderColor: 'gray',
     borderWidth: 1,
-    borderRadius: 5,
-    marginTop: 20,
-    marginBottom: 20,
-    paddingHorizontal: 10,
     textAlignVertical: 'top',
-  },
-  saveButton: {
-    backgroundColor: '#4a90e2',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 5,
-  },
-  saveButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 16,
+    paddingLeft: 10,
+    paddingRight: 10,
+    marginBottom: 10,
   },
 });
 
