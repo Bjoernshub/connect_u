@@ -1,15 +1,24 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { View, Text, Button, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { View, Text, Button, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import InterestsContext from '../context/InterestsContext';
 
 const ProfileScreen = () => {
+  console.log('About You1: ', aboutYou)
   const navigation = useNavigation();
+  const route = useRoute();
   const [image, setImage] = useState(null);
   const { interests } = useContext(InterestsContext);
+  const [aboutYou, setAboutYou] = useState('A brief description');
+  console.log('About You2: ', aboutYou)
+
+  const updateAboutYou = (newAboutYou) => {
+    setAboutYou(newAboutYou);
+    console.log('About You3: ', aboutYou)
+  };
 
   useEffect(() => {
     (async () => {
@@ -75,8 +84,9 @@ const ProfileScreen = () => {
       </View>
       <Text style={styles.title}>About you</Text>
       <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-        <Text style={styles.description}>A brief description about yourself</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('EditAboutYou')}>
+        <Text style={styles.description}>{aboutYou}</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('EditAboutYou',
+           { updateAboutYou: updateAboutYou })}>
           <MaterialCommunityIcons name="pencil" size={24} color="black" />
         </TouchableOpacity>
       </View>

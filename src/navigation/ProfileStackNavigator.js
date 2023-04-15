@@ -15,6 +15,8 @@ import HelpSupportScreen from '../screens/settingScreens/HelpSupportScreen';
 import LanguageScreen from '../screens/settingScreens/LanguageScreen';
 import NotificationsScreen from '../screens/settingScreens/NotificationsScreen';
 import PrivacyScreen from '../screens/settingScreens/PrivacyScreen';
+import DetectLocation from '../screens/editScreens/locations/DetectLocation';
+
 
 const Stack = createStackNavigator();
 
@@ -50,7 +52,12 @@ const ProfileStackNavigator = () => {
       <Stack.Screen name="HelpSupport" component={HelpSupportScreen} />  
       <Stack.Screen name="Language" component={LanguageScreen} />  
       <Stack.Screen name="Notifications" component={NotificationsScreen} />  
-      <Stack.Screen name="Privacy" component={PrivacyScreen} />         
+      <Stack.Screen name="Privacy" component={PrivacyScreen} />
+      <Stack.Screen
+        name="DetectLocation"
+        component={DetectLocation}
+        options={{ title: 'Detect Location' }}
+      />         
     </Stack.Navigator>
   );
 };

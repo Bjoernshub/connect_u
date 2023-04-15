@@ -7,6 +7,7 @@ import ChatStackNavigator from './src/navigation/ChatStackNavigator';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { InterestsProvider } from './src/context/InterestsContext';
 
+
 const Tab = createBottomTabNavigator();
 
 export default function App() {
