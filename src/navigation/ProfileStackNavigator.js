@@ -16,13 +16,31 @@ import LanguageScreen from '../screens/settingScreens/LanguageScreen';
 import NotificationsScreen from '../screens/settingScreens/NotificationsScreen';
 import PrivacyScreen from '../screens/settingScreens/PrivacyScreen';
 import DetectLocation from '../screens/editScreens/locations/DetectLocation';
-
+import ThemeScreen from '../screens/settingScreens/ThemeScreen';
+import { lightTheme, darkTheme } from '../Themes';
+import { useContext } from 'react';
+import ThemeContext from '../context/ThemeContext';
 
 const Stack = createStackNavigator();
 
 const ProfileStackNavigator = () => {
+  const { isDarkMode } = useContext(ThemeContext);
+  const theme = isDarkMode ? darkTheme : lightTheme;
+
+
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName="Profile"
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: theme.backgroundColor,
+        },
+        headerTintColor: theme.textColor,
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          color: theme.textColor,
+        },
+      }}
+    >
       <Stack.Screen name="NestedProfile" component={ProfileScreen} />
       <Stack.Screen name="Settings" component={SettingsScreen} />
       <Stack.Screen
@@ -52,7 +70,8 @@ const ProfileStackNavigator = () => {
       <Stack.Screen name="HelpSupport" component={HelpSupportScreen} />  
       <Stack.Screen name="Language" component={LanguageScreen} />  
       <Stack.Screen name="Notifications" component={NotificationsScreen} />  
-      <Stack.Screen name="Privacy" component={PrivacyScreen} />
+      <Stack.Screen name="Privacy" component={PrivacyScreen} /> 
+      <Stack.Screen name="Theme" component={ThemeScreen} />
       <Stack.Screen
         name="DetectLocation"
         component={DetectLocation}

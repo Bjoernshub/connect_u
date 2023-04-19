@@ -5,14 +5,15 @@ import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import InterestsContext from '../context/InterestsContext';
+import ProfilePictureContext from '../context/ProfilePictureContext';
 
 const ProfileScreen = () => {
   console.log('About You1: ', aboutYou)
   const navigation = useNavigation();
   const route = useRoute();
-  const [image, setImage] = useState(null);
   const { interests } = useContext(InterestsContext);
   const [aboutYou, setAboutYou] = useState('A brief description');
+  const { image, setImage } = useContext(ProfilePictureContext);
   console.log('About You2: ', aboutYou)
 
   const updateAboutYou = (newAboutYou) => {

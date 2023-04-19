@@ -35,7 +35,9 @@ const SettingsScreen = () => {
         <TouchableOpacity onPress={() => handlePress('AboutLegal')}>
           <List.Item title="About & Legal" />
         </TouchableOpacity>
-        {/* Add the remaining List items */}
+        <TouchableOpacity onPress={() => handlePress('Theme')}>
+          <List.Item title="Theme" />
+        </TouchableOpacity>
       </List.Section>
     </View>
   );
