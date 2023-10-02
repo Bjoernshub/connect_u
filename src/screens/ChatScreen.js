@@ -1,9 +1,20 @@
-import React, { useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import ThemeContext from '../context/ThemeContext';
+import { lightTheme, darkTheme } from '../Themes';
 
-const ChatScreen = () => {
-  const navigation = useNavigation();
+const ChatScreen = ({ navigation }) => {
+  const { isDarkMode } = useContext(ThemeContext);
+  const theme = isDarkMode ? darkTheme : lightTheme;
+
+  navigation.setOptions({
+    headerStyle: {
+      backgroundColor: theme.backgroundColor,
+    },
+    headerTintColor: theme.textColor,
+  });
+
   const [chats, setChats] = useState([
     {
       id: '1',
@@ -17,19 +28,29 @@ const ChatScreen = () => {
     },
   ]);
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.backgroundColor,
+    },
+    text: {
+      color: theme.textColor,
+    },
+  });
+
   const renderItem = ({ item }) => (
     <TouchableOpacity
       onPress={() => navigation.navigate('IndividualChat', { chatName: item.name })}
     >
       <View style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
-        <Text style={{ fontWeight: 'bold' }}>{item.name}</Text>
-        <Text>{item.lastMessage}</Text>
+        <Text style={[styles.text, { fontWeight: 'bold' }]}>{item.name}</Text>
+        <Text style={styles.text}>{item.lastMessage}</Text>
       </View>
     </TouchableOpacity>
   );
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
       {chats.length > 0 ? (
         <FlatList
           data={chats}
@@ -38,7 +59,7 @@ const ChatScreen = () => {
         />
       ) : (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text>No chats available</Text>
+          <Text style={styles.text}>No chats available</Text>
         </View>
       )}
     </View>

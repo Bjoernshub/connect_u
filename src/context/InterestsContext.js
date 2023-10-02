@@ -6,8 +6,10 @@ export const InterestsProvider = ({ children }) => {
   const [interests, setInterests] = useState([]);
 
   const updateInterests = (newInterests) => {
+    console.log('Interests updated:', newInterests);
     setInterests(newInterests);
   };
+
 
   return (
     <InterestsContext.Provider value={{ interests, updateInterests  }}>

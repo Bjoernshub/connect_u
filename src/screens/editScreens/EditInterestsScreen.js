@@ -9,7 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 const categories = [
   {
     name: 'Sports & Fitness',
-    items: [
+    interests: [
       'Running',
       'Swimming',
       'Cycling',
@@ -21,7 +21,7 @@ const categories = [
   },
   {
     name: 'Outdoor Activities',
-    items: [
+    interests: [
       'Hiking',
       'Camping',
       'Fishing',
@@ -33,7 +33,7 @@ const categories = [
   },
   {
     name: 'Dating & Relationships',
-    items: [
+    interests: [
       'Singles Events',
       'Speed Dating',
       'Relationship Workshops',
@@ -45,7 +45,7 @@ const categories = [
   },
   {
     name: 'Hobbies & Crafts',
-    items: [
+    interests: [
       'Painting',
       'Drawing',
       'Sculpting',
@@ -57,7 +57,7 @@ const categories = [
   },
   {
     name: 'Arts & Culture',
-    items: [
+    interests: [
       'Museums',
       'Theater',
       'Opera',
@@ -69,7 +69,7 @@ const categories = [
   },
   {
     name: 'Board Games & Tabletop Games',
-    items: [
+    interests: [
       'Strategy Games',
       'Card Games',
       'Role-Playing Games',
@@ -81,7 +81,7 @@ const categories = [
   },
   {
     name: 'Technology & Gadgets',
-    items: [
+    interests: [
       'Computers & Software',
       'Mobile Devices',
       'Robotics',
@@ -93,7 +93,7 @@ const categories = [
   },
   {
     name: 'Books & Literature',
-    items: [
+    interests: [
       'Fiction',
       'Non-fiction',
       'Poetry',
@@ -105,7 +105,7 @@ const categories = [
   },
   {
     name: 'Movies & TV Shows',
-    items: [
+    interests: [
       'Action & Adventure',
       'Comedy',
       'Drama',
@@ -117,7 +117,7 @@ const categories = [
   },
   {
     name: 'Music & Concerts',
-    items: [
+    interests: [
       'Rock',
       'Pop',
       'Jazz',
@@ -129,7 +129,7 @@ const categories = [
   },
   {
     name: 'Food & Drink',
-    items: [
+    interests: [
       'Cooking Classes',
       'Wine Tasting',
       'Beer Tasting',
@@ -141,7 +141,7 @@ const categories = [
   },
   {
     name: 'Travel & Adventure',
-    items: [
+    interests: [
       'Road Trips',
       'Backpacking',
       'Cruises',
@@ -153,7 +153,7 @@ const categories = [
   },
   {
     name: 'Volunteering & Community Service',
-    items: [
+    interests: [
       'Animal Welfare',
       'Environmental Conservation',
       'Homelessness & Housing',
@@ -165,7 +165,7 @@ const categories = [
   },
   {
     name: 'Language & Cultural Exchange',
-    items: [
+    interests: [
       'Language Classes',
       'Conversation Partners',
       'Language Exchange Events',
@@ -177,7 +177,7 @@ const categories = [
   },
   {
     name: 'Parenting & Family',
-    items: [
+    interests: [
       'Playdates',
       'Parenting Workshops',
       'Support Groups',
@@ -189,7 +189,7 @@ const categories = [
   },
   {
     name: 'Pets & Animals',
-    items: [
+    interests: [
       'Dog Walking',
       'Pet Playdates',
       'Animal Adoption Events',
@@ -201,7 +201,7 @@ const categories = [
   },
   {
     name: 'Education & Learning',
-    items: [
+    interests: [
       'Workshops & Seminars',
       'Online Courses',
       'Professional Development',
@@ -213,7 +213,7 @@ const categories = [
   },
   {
     name: 'Career & Networking',
-    items: [
+    interests: [
       'Professional Associations',
       'Job Search Support',
       'Industry Conferences',
@@ -225,7 +225,7 @@ const categories = [
   },
   {
     name: 'Health & Wellness',
-    items: [
+    interests: [
       'Meditation',
       'Mindfulness',
       'Nutrition',
@@ -237,7 +237,7 @@ const categories = [
   },
   {
     name: 'Spirituality & Religion',
-    items: [
+    interests: [
       'Faith-based Communities',
       'Spiritual Growth',
       'Meditation Retreats',
@@ -249,7 +249,7 @@ const categories = [
   },
   {
     name: 'Environment & Sustainability',
-    items: [
+    interests: [
       'Conservation Efforts',
       'Clean Energy',
       'Recycling & Waste Reduction',
@@ -261,7 +261,7 @@ const categories = [
   },
   {
     name: 'Social & Nightlife',
-    items: [
+    interests: [
       'Bars & Clubs',
       'Happy Hours',
       'Themed Parties',
@@ -273,33 +273,39 @@ const categories = [
   },
 ];
 
-const EditInterestsScreen = ({ route }) => {
+const EditInterestsScreen = ({ route, navigation  }) => {
   const { interests, updateInterests } = useContext(InterestsContext);
-  const [selectedItems, setSelectedItems] = useState(interests);
-  const navigation = useNavigation();
+  const { selectedInterests: initialSelectedInterests } = route.params;
+  const [selectedInterests, setSelectedInterests] = useState(interests);
 
-  useEffect(() => {
-    if (route.params?.saveInterests) {
-      handleSaveButton();
-      // Clear the saveInterests param after saving.
-      navigation.setParams({ saveInterests: false });
-    }
-  }, [route.params?.saveInterests]);
+  console.log('Initial interests in EditInterestsScreen:', interests);
 
-  const toggleItem = (item) => {
-    console.log('Toggling item:', item)
-    if (selectedItems.includes(item)) {
-      setSelectedItems(selectedItems.filter((i) => i !== item));
+  const toggleInterest = (interest) => {
+    console.log('Toggling interest:', interest)
+    if (selectedInterests.includes(interest)) {
+      setSelectedInterests(selectedInterests.filter((i) => i !== interest));
     } else {
-      setSelectedItems([...selectedItems, item]);
+      setSelectedInterests([...selectedInterests, interest]);
     }
   };
 
-  const handleSaveButton = () => {
-    console.log('Saving interests:', selectedItems);
-    updateInterests(selectedItems);
+  const onSaveButtonPress = () => {
+    console.log('Saving interests:', selectedInterests);
+    updateInterests(selectedInterests);
     navigation.goBack();
   };
+
+  useEffect(() => {
+    const unsubscribe = navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={onSaveButtonPress} style={styles.saveButton}>
+          <Text style={styles.saveButtonText}>Save</Text>
+        </TouchableOpacity>
+      ),
+    });
+
+    return unsubscribe;
+  }, [navigation, onSaveButtonPress]);
 
   return (
     <ScrollView>
@@ -307,34 +313,40 @@ const EditInterestsScreen = ({ route }) => {
         {categories.map((category, index) => (
           <View key={index} style={styles.categoryContainer}>
             <Text style={styles.categoryTitle}>{category.name}</Text>
-            {category.items.map((item) => (
+            {category.interests.map((interest) => (
               <CheckBox
-                key={item}
-                title={item}
-                checked={selectedItems.includes(item)}
-                onPress={() => toggleItem(item)}
+                key={interest}
+                title={interest}
+                checked={selectedInterests.includes(interest)}
+                onPress={() => toggleInterest(interest)}
               />
             ))}
           </View>
         ))}
       </View>
+      <TouchableOpacity
+        onPress={onSaveButtonPress}
+        style={styles.saveButton}
+      >
+        <Text style={styles.saveButtonText}>Save</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 10,
-  },
-  categoryContainer: {
-    marginTop: 20,
-  },
-  categoryTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-});
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      paddingHorizontal: 10,
+    },
+    categoryContainer: {
+      marginTop: 20,
+    },
+    categoryTitle: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      marginBottom: 10,
+    },
+  });
 
 export default EditInterestsScreen;

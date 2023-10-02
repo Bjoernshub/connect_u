@@ -1,15 +1,25 @@
-import React, { useState, useEffect, useContext  } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { View, Text, Button, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { View, Text, Button, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import InterestsContext from '../context/InterestsContext';
+import ProfilePictureContext from '../context/ProfilePictureContext';
 
 const ProfileScreen = () => {
+  console.log('About You1: ', aboutYou)
   const navigation = useNavigation();
-  const [image, setImage] = useState(null);
-  const { interests, updateInterests } = useContext(InterestsContext);
+  const route = useRoute();
+  const { interests } = useContext(InterestsContext);
+  const [aboutYou, setAboutYou] = useState('A brief description');
+  const { image, setImage } = useContext(ProfilePictureContext);
+  console.log('About You2: ', aboutYou)
+
+  const updateAboutYou = (newAboutYou) => {
+    setAboutYou(newAboutYou);
+    console.log('About You3: ', aboutYou)
+  };
 
   useEffect(() => {
     (async () => {
@@ -45,6 +55,13 @@ const ProfileScreen = () => {
     });
   }, [navigation]);
 
+  console.log('Interests in ProfileScreen:', interests);
+
+  const onPressEditInterests = () => {
+    navigation.navigate('EditInterests', {
+      selectedInterests: interests,
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -62,14 +79,12 @@ const ProfileScreen = () => {
       </TouchableOpacity>
       <Text style={styles.username}>Username</Text>
       <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-        <TouchableOpacity onPress={() => navigation.navigate('EditUsername')}>
-          <MaterialCommunityIcons name="pencil" size={24} color="black" />
-        </TouchableOpacity>
       </View>
       <Text style={styles.title}>About you</Text>
       <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-        <Text style={styles.description}>A brief description about yourself</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('EditAboutYou')}>
+        <Text style={styles.description}>{aboutYou}</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('EditAboutYou',
+           { updateAboutYou: updateAboutYou })}>
           <MaterialCommunityIcons name="pencil" size={24} color="black" />
         </TouchableOpacity>
       </View>
@@ -80,14 +95,13 @@ const ProfileScreen = () => {
           <MaterialCommunityIcons name="pencil" size={24} color="black" />
         </TouchableOpacity>
       </View>
-      
       <Text style={styles.title}>Interest tags</Text>
       <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
         <Text style={styles.description}>{interests.join(', ')}</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('EditInterests')}>
+        <TouchableOpacity onPress={onPressEditInterests}>
           <MaterialCommunityIcons name="pencil" size={24} color="black" />
         </TouchableOpacity>
-      </View>   
+      </View>
       <Text style={styles.title}>Social media links</Text>
       <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
         <Text style={styles.description}>links</Text>
@@ -95,40 +109,41 @@ const ProfileScreen = () => {
           <MaterialCommunityIcons name="pencil" size={24} color="black" />
         </TouchableOpacity>
       </View>
-    </View>
+  </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
   },
   profileImage: {
     width: 150,
     height: 150,
     borderRadius: 75,
-    marginBottom: 20,
+    marginBottom: 10,
   },
   username: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 5,
   },
   title: {
     fontSize: 18,
     fontWeight: 'bold',
     alignSelf: 'flex-start',
     marginLeft: 20,
-    marginTop: 10,
+    marginTop: 20,
   },
   description: {
     fontSize: 16,
-    alignSelf: 'flex-start',
+    marginTop: 5,
     marginLeft: 20,
-    marginBottom: 10,
+    marginRight: 5,
   },
 });
 
-export default ProfileScreen;
+export default ProfileScreen;  

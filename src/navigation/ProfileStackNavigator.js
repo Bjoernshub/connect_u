@@ -6,48 +6,71 @@ import SettingsScreen from '../screens/SettingsScreen';
 import EditInterestsScreen from '../screens/editScreens/EditInterestsScreen';
 import EditAboutYouScreen from '../screens/editScreens/EditAboutYouScreen';
 import EditLocationScreen from '../screens/editScreens/EditLocationScreen';
-import EditUsernameScreen from '../screens/editScreens/EditUsernameScreen';
 import EditSocialMediaLinksScreen from '../screens/editScreens/EditSocialMediaLinksScreen';
 import AboutLegalScreen from '../screens/settingScreens/AboutLegalScreen';
-import AccountScreen from '../screens/settingScreens/AccountScreen';
+import GeneralScreen from '../screens/settingScreens/GeneralScreen';
 import BlockedUsersScreen from '../screens/settingScreens/BlockedUsersScreen';
 import HelpSupportScreen from '../screens/settingScreens/HelpSupportScreen';
-import LanguageScreen from '../screens/settingScreens/LanguageScreen';
 import NotificationsScreen from '../screens/settingScreens/NotificationsScreen';
 import PrivacyScreen from '../screens/settingScreens/PrivacyScreen';
+import DetectLocation from '../screens/editScreens/locations/DetectLocation';
+import { lightTheme, darkTheme } from '../Themes';
+import { useContext } from 'react';
+import ThemeContext from '../context/ThemeContext';
 
 const Stack = createStackNavigator();
 
 const ProfileStackNavigator = () => {
+  const { isDarkMode } = useContext(ThemeContext);
+  const theme = isDarkMode ? darkTheme : lightTheme;
+
+
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName="Profile"
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: theme.backgroundColor,
+        },
+        headerTintColor: theme.textColor,
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          color: theme.textColor,
+        },
+      }}
+    >
       <Stack.Screen name="NestedProfile" component={ProfileScreen} />
       <Stack.Screen name="Settings" component={SettingsScreen} />
       <Stack.Screen
         name="EditInterests"
         component={EditInterestsScreen}
-        options={({ navigation }) => ({
+        options={({ navigation, route }) => ({
           headerRight: () => (
             <TouchableOpacity
-              onPress={() => navigation.navigate('NestedProfile', { saveInterests: true })}
-              style={styles.saveButton}
+              onPress={() => {
+                route.params?.onSaveButtonPress();
+                navigation.goBack();
+              }}
+              style={{ marginRight: 15 }}
             >
-              <Text style={styles.saveButtonText}>Save</Text>
+              <Text style={{ color: 'blue', fontSize: 16 }}>Save</Text>
             </TouchableOpacity>
           ),
         })}
       />
       <Stack.Screen name="EditAboutYou" component={EditAboutYouScreen} />  
       <Stack.Screen name="EditLocation" component={EditLocationScreen} />
-      <Stack.Screen name="EditUsername" component={EditUsernameScreen} />  
       <Stack.Screen name="EditSocialMediaLinks" component={EditSocialMediaLinksScreen} />    
-      <Stack.Screen name="AboutLegal" component={AboutLegalScreen} />  
-      <Stack.Screen name="Account" component={AccountScreen} />  
+      <Stack.Screen name="AboutLegal" component={AboutLegalScreen} /> 
       <Stack.Screen name="BlockedUsers" component={BlockedUsersScreen} />  
       <Stack.Screen name="HelpSupport" component={HelpSupportScreen} />  
-      <Stack.Screen name="Language" component={LanguageScreen} />  
       <Stack.Screen name="Notifications" component={NotificationsScreen} />  
-      <Stack.Screen name="Privacy" component={PrivacyScreen} />         
+      <Stack.Screen name="Privacy" component={PrivacyScreen} />
+      <Stack.Screen name="General" component={GeneralScreen} /> 
+      <Stack.Screen
+        name="DetectLocation"
+        component={DetectLocation}
+        options={{ title: 'Detect Location' }}
+      />         
     </Stack.Navigator>
   );
 };
