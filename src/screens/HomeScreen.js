@@ -80,24 +80,28 @@ const HomeScreen = () => {
             ],
           }}
         />
-        <Image
+        <View
           style={{
             width: 75,
             height: 75,
             borderRadius: 37.5,
-            marginBottom: 10,
-            borderWidth: 2,
-            borderColor: 'white',
+            overflow: 'hidden',
           }}
-          source={
-            image
-              ? { uri: image }
-              : {
+        >
+          <Image
+            style={{
+              width: '100%',
+              height: '100%',
+            }}
+            source={
+              image
+                ? { uri: image }
+                : {
                   uri: 'https://via.placeholder.com/150',
                 }
-          }
-        />
-        <Text style={styles.text}>Home Screen</Text>
+            }
+          />
+        </View>
       </View>
     </BackgroundImage>
   );

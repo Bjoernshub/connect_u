@@ -6,17 +6,14 @@ import SettingsScreen from '../screens/SettingsScreen';
 import EditInterestsScreen from '../screens/editScreens/EditInterestsScreen';
 import EditAboutYouScreen from '../screens/editScreens/EditAboutYouScreen';
 import EditLocationScreen from '../screens/editScreens/EditLocationScreen';
-import EditUsernameScreen from '../screens/editScreens/EditUsernameScreen';
 import EditSocialMediaLinksScreen from '../screens/editScreens/EditSocialMediaLinksScreen';
 import AboutLegalScreen from '../screens/settingScreens/AboutLegalScreen';
-import AccountScreen from '../screens/settingScreens/AccountScreen';
+import GeneralScreen from '../screens/settingScreens/GeneralScreen';
 import BlockedUsersScreen from '../screens/settingScreens/BlockedUsersScreen';
 import HelpSupportScreen from '../screens/settingScreens/HelpSupportScreen';
-import LanguageScreen from '../screens/settingScreens/LanguageScreen';
 import NotificationsScreen from '../screens/settingScreens/NotificationsScreen';
 import PrivacyScreen from '../screens/settingScreens/PrivacyScreen';
 import DetectLocation from '../screens/editScreens/locations/DetectLocation';
-import ThemeScreen from '../screens/settingScreens/ThemeScreen';
 import { lightTheme, darkTheme } from '../Themes';
 import { useContext } from 'react';
 import ThemeContext from '../context/ThemeContext';
@@ -62,16 +59,13 @@ const ProfileStackNavigator = () => {
       />
       <Stack.Screen name="EditAboutYou" component={EditAboutYouScreen} />  
       <Stack.Screen name="EditLocation" component={EditLocationScreen} />
-      <Stack.Screen name="EditUsername" component={EditUsernameScreen} />  
       <Stack.Screen name="EditSocialMediaLinks" component={EditSocialMediaLinksScreen} />    
-      <Stack.Screen name="AboutLegal" component={AboutLegalScreen} />  
-      <Stack.Screen name="Account" component={AccountScreen} />  
+      <Stack.Screen name="AboutLegal" component={AboutLegalScreen} /> 
       <Stack.Screen name="BlockedUsers" component={BlockedUsersScreen} />  
       <Stack.Screen name="HelpSupport" component={HelpSupportScreen} />  
-      <Stack.Screen name="Language" component={LanguageScreen} />  
       <Stack.Screen name="Notifications" component={NotificationsScreen} />  
-      <Stack.Screen name="Privacy" component={PrivacyScreen} /> 
-      <Stack.Screen name="Theme" component={ThemeScreen} />
+      <Stack.Screen name="Privacy" component={PrivacyScreen} />
+      <Stack.Screen name="General" component={GeneralScreen} /> 
       <Stack.Screen
         name="DetectLocation"
         component={DetectLocation}

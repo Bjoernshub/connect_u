@@ -79,9 +79,6 @@ const ProfileScreen = () => {
       </TouchableOpacity>
       <Text style={styles.username}>Username</Text>
       <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-        <TouchableOpacity onPress={() => navigation.navigate('EditUsername')}>
-          <MaterialCommunityIcons name="pencil" size={24} color="black" />
-        </TouchableOpacity>
       </View>
       <Text style={styles.title}>About you</Text>
       <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
