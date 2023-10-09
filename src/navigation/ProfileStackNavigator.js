@@ -14,6 +14,7 @@ import HelpSupportScreen from '../screens/settingScreens/HelpSupportScreen';
 import NotificationsScreen from '../screens/settingScreens/NotificationsScreen';
 import PrivacyScreen from '../screens/settingScreens/PrivacyScreen';
 import DetectLocation from '../screens/editScreens/locations/DetectLocation';
+import SetLocation from '../screens/editScreens/locations/SetLocation';
 import { lightTheme, darkTheme } from '../Themes';
 import { useContext } from 'react';
 import ThemeContext from '../context/ThemeContext';
@@ -65,6 +66,7 @@ const ProfileStackNavigator = () => {
       <Stack.Screen name="HelpSupport" component={HelpSupportScreen} />  
       <Stack.Screen name="Notifications" component={NotificationsScreen} />  
       <Stack.Screen name="Privacy" component={PrivacyScreen} />
+      <Stack.Screen name="SetLocation" component={SetLocation} />
       <Stack.Screen name="General" component={GeneralScreen} /> 
       <Stack.Screen
         name="DetectLocation"
