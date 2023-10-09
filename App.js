@@ -11,16 +11,21 @@ import { ThemeProvider } from './src/context/ThemeContext';
 import { useContext } from 'react';
 import ThemeContext from './src/context/ThemeContext';
 import { lightTheme, darkTheme } from './src/Themes';
+import LocationContext from './src/context/LocationContext';
 
 const Tab = createBottomTabNavigator();
 
 const App = () => {
+  const [location, setLocation] = React.useState(null);
+
   return (
     <NavigationContainer>
       <ThemeProvider>
         <ProfilePictureProvider>
           <InterestsProvider>
-            <MyTabs />
+            <LocationContext.Provider value={{ location, setLocation }}>
+              <MyTabs />
+            </LocationContext.Provider>
           </InterestsProvider>
         </ProfilePictureProvider>
       </ThemeProvider>

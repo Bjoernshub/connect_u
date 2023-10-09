@@ -1,15 +1,32 @@
-import React from 'react';
+import React, { useRef, useState, useContext } from 'react';
 import { View, Button, StyleSheet, Image } from 'react-native';
 import MapView from 'react-native-maps';
+import { useNavigation } from '@react-navigation/native';
+import LocationContext from '../../../context/LocationContext';
 
 const SetLocation = () => {
-    const handleConfirmLocation = () => {
+    const navigation = useNavigation();
+    const mapRef = useRef(null);
+    const { setLocation } = useContext(LocationContext);
+
+    const handleConfirmLocation = async () => {
+        // Get the current region from the map
+        const region = await mapRef.current.getCamera();
+
         // Save the selected location
+        setLocation({
+            latitude: region.center.latitude,
+            longitude: region.center.longitude,
+        });
+
+        // Navigate to the ProfileScreen
+        navigation.navigate('ProfileScreen');
     };
 
     return (
         <View style={styles.container}>
             <MapView
+                ref={mapRef}
                 style={styles.map}
                 initialRegion={{
                     latitude: 37.78825,

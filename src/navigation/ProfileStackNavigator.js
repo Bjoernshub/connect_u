@@ -39,7 +39,7 @@ const ProfileStackNavigator = () => {
         },
       }}
     >
-      <Stack.Screen name="NestedProfile" component={ProfileScreen} />
+      <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
       <Stack.Screen name="Settings" component={SettingsScreen} />
       <Stack.Screen
         name="EditInterests"
@@ -58,24 +58,24 @@ const ProfileStackNavigator = () => {
           ),
         })}
       />
-      <Stack.Screen name="EditAboutYou" component={EditAboutYouScreen} />  
+      <Stack.Screen name="EditAboutYou" component={EditAboutYouScreen} />
       <Stack.Screen name="EditLocation" component={EditLocationScreen} />
-      <Stack.Screen name="EditSocialMediaLinks" component={EditSocialMediaLinksScreen} />    
-      <Stack.Screen name="AboutLegal" component={AboutLegalScreen} /> 
-      <Stack.Screen name="BlockedUsers" component={BlockedUsersScreen} />  
-      <Stack.Screen name="HelpSupport" component={HelpSupportScreen} />  
-      <Stack.Screen name="Notifications" component={NotificationsScreen} />  
+      <Stack.Screen name="EditSocialMediaLinks" component={EditSocialMediaLinksScreen} />
+      <Stack.Screen name="AboutLegal" component={AboutLegalScreen} />
+      <Stack.Screen name="BlockedUsers" component={BlockedUsersScreen} />
+      <Stack.Screen name="HelpSupport" component={HelpSupportScreen} />
+      <Stack.Screen name="Notifications" component={NotificationsScreen} />
       <Stack.Screen name="Privacy" component={PrivacyScreen} />
       <Stack.Screen name="SetLocation" component={SetLocation} />
-      <Stack.Screen name="General" component={GeneralScreen} /> 
+      <Stack.Screen name="General" component={GeneralScreen} />
       <Stack.Screen
         name="DetectLocation"
         component={DetectLocation}
         options={{ title: 'Detect Location' }}
-      />         
+      />
     </Stack.Navigator>
   );
-};
+      }  
 
 const styles = StyleSheet.create({
   saveButton: {
