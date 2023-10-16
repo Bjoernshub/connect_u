@@ -12,6 +12,9 @@ import { useContext } from 'react';
 import ThemeContext from './src/context/ThemeContext';
 import { lightTheme, darkTheme } from './src/Themes';
 import LocationContext from './src/context/LocationContext';
+import Geocoder from 'react-native-geocoding';
+
+Geocoder.init('YOUR_GOOGLE_MAPS_API_KEY');
 
 const Tab = createBottomTabNavigator();
 

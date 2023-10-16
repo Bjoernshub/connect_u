@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
+import { useNavigation } from '@react-navigation/native';
 
 const DetectLocation = () => {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+  const navigation = useNavigation();
 
   useEffect(() => {
     (async () => {
@@ -21,6 +23,11 @@ const DetectLocation = () => {
     })();
   }, []);
 
+  const handleConfirmLocation = () => {
+    // Navigate to the ProfileScreen
+    navigation.navigate('ProfileScreen');
+  };
+
   if (errorMsg) {
     return (
       <View style={styles.container}>
@@ -32,24 +39,29 @@ const DetectLocation = () => {
   return (
     <View style={styles.container}>
       {location ? (
-        <MapView
-          style={styles.map}
-          initialRegion={{
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-        >
-          <Marker
-            coordinate={{
+        <>
+          <MapView
+            style={styles.map}
+            initialRegion={{
               latitude: location.coords.latitude,
               longitude: location.coords.longitude,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
             }}
-            title="Your location"
-            description="You are here"
-          />
-        </MapView>
+          >
+            <Marker
+              coordinate={{
+                latitude: location.coords.latitude,
+                longitude: location.coords.longitude,
+              }}
+              title="Your location"
+              description="You are here"
+            />
+          </MapView>
+          <View style={styles.button}>
+            <Button title="OK" onPress={handleConfirmLocation} />
+          </View>
+        </>
       ) : (
         <Text>Loading map...</Text>
       )}
@@ -66,6 +78,11 @@ const styles = StyleSheet.create({
   map: {
     width: '100%',
     height: '100%',
+  },
+  button: {
+    position: 'absolute',
+    top: 10, // Adjust this value as needed
+    right: 10, // Adjust this value as needed
   },
 });
 
