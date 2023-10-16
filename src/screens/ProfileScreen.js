@@ -5,14 +5,17 @@ import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import InterestsContext from '../context/InterestsContext';
+import ProfilePictureContext from '../context/ProfilePictureContext';
+import LocationContext from '../context/LocationContext';
 
 const ProfileScreen = () => {
   console.log('About You1: ', aboutYou)
   const navigation = useNavigation();
   const route = useRoute();
-  const [image, setImage] = useState(null);
+  const { location } = useContext(LocationContext);
   const { interests } = useContext(InterestsContext);
   const [aboutYou, setAboutYou] = useState('A brief description');
+  const { image, setImage } = useContext(ProfilePictureContext);
   console.log('About You2: ', aboutYou)
 
   const updateAboutYou = (newAboutYou) => {
@@ -20,6 +23,11 @@ const ProfileScreen = () => {
     console.log('About You3: ', aboutYou)
   };
 
+
+  useEffect(() => {
+    console.log('Location has changed:', location);
+  }, [location]);
+  
   useEffect(() => {
     (async () => {
       if (Constants.platform.ios) {
@@ -71,28 +79,25 @@ const ProfileScreen = () => {
             image
               ? { uri: image }
               : {
-                  uri: 'https://via.placeholder.com/150',
-                }
+                uri: 'https://via.placeholder.com/150',
+              }
           }
         />
       </TouchableOpacity>
       <Text style={styles.username}>Username</Text>
-      <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-        <TouchableOpacity onPress={() => navigation.navigate('EditUsername')}>
-          <MaterialCommunityIcons name="pencil" size={24} color="black" />
-        </TouchableOpacity>
-      </View>
       <Text style={styles.title}>About you</Text>
       <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
         <Text style={styles.description}>{aboutYou}</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('EditAboutYou',
-           { updateAboutYou: updateAboutYou })}>
+        <TouchableOpacity onPress={() => navigation.navigate('EditAboutYou',
+          { updateAboutYou: updateAboutYou })}>
           <MaterialCommunityIcons name="pencil" size={24} color="black" />
         </TouchableOpacity>
       </View>
       <Text style={styles.title}>Location</Text>
       <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-        <Text style={styles.description}>City, Country</Text>
+        <Text style={styles.description}>
+          {location ? `${location.latitude}, ${location.longitude}` : 'City, Country'}
+        </Text>
         <TouchableOpacity onPress={() => navigation.navigate('EditLocation')}>
           <MaterialCommunityIcons name="pencil" size={24} color="black" />
         </TouchableOpacity>
@@ -111,9 +116,9 @@ const ProfileScreen = () => {
           <MaterialCommunityIcons name="pencil" size={24} color="black" />
         </TouchableOpacity>
       </View>
-  </View>
+    </View>
   );
-};
+        };
 
 const styles = StyleSheet.create({
   container: {
@@ -148,4 +153,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProfileScreen;  
+export default ProfileScreen;
