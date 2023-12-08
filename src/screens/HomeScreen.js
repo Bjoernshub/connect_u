@@ -29,7 +29,7 @@ const HomeScreen = () => {
   const styles = StyleSheet.create({
     container: {
       alignItems: 'center',
-      backgroundColor: theme.backgroundColor,
+      backgroundColor: 'transparent',
     },
     text: {
       color: theme.textColor,
@@ -64,8 +64,7 @@ const HomeScreen = () => {
             width: 75,
             height: 75,
             borderRadius: 37.5,
-            borderWidth: 1,
-            borderColor: 'white',
+            borderWidth: 0,
             opacity: scaleAnimation.interpolate({
               inputRange: [0, 1],
               outputRange: [1, 0],
@@ -86,6 +85,7 @@ const HomeScreen = () => {
             height: 75,
             borderRadius: 37.5,
             overflow: 'hidden',
+            backgroundColor: 'transparent',
           }}
         >
           <Image
@@ -106,5 +106,6 @@ const HomeScreen = () => {
     </BackgroundImage>
   );
 };
+
 
 export default HomeScreen;
