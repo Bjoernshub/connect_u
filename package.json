@@ -8,10 +8,12 @@
   "dependencies": {
     "@expo/vector-icons": "^13.0.0",
     "@react-native-community/geolocation": "^3.0.6",
+    "@react-native-community/slider": "^4.5.0",
     "@react-navigation/bottom-tabs": "^6.5.7",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",
     "@react-navigation/stack": "^6.3.16",
+    "axios": "^1.6.2",
     "expo": "^49.0.21",
     "expo-image-picker": "~14.3.2",
     "expo-location": "~16.1.0",
@@ -38,7 +40,7 @@
     "transformIgnorePatterns": [
       "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base)"
     ]
-  }, 
+  },
   "devDependencies": {
     "@babel/core": "^7.23.6",
     "@babel/preset-env": "^7.23.6",

@@ -9,17 +9,14 @@ import ProfilePictureContext from '../context/ProfilePictureContext';
 import LocationContext from '../context/LocationContext';
 
 const ProfileScreen = () => {
-  console.log('About You1: ', aboutYou)
   const navigation = useNavigation();
   const route = useRoute();
   const { interests } = useContext(InterestsContext);
   const [aboutYou, setAboutYou] = useState('A brief description');
   const { image, setImage } = useContext(ProfilePictureContext);
-  console.log('About You2: ', aboutYou)
 
   const updateAboutYou = (newAboutYou) => {
     setAboutYou(newAboutYou);
-    console.log('About You3: ', aboutYou)
   };
 
   useEffect(() => {
@@ -35,6 +32,7 @@ const ProfileScreen = () => {
 
   
   const locationContext = React.useContext(LocationContext);
+  console.log('Location in ProfileScreen:', locationContext);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -46,7 +44,7 @@ const ProfileScreen = () => {
 
     console.log(result);
 
-    if (!result.cancelled) {
+    if (!result.canceled) {
       setImage(result.uri);
     }
   };
@@ -91,8 +89,8 @@ const ProfileScreen = () => {
     <View style={styles.row}>
       <Text>
         {locationContext.location 
-          ? `${locationContext.location.city}, ${locationContext.location.country}` 
-          : "City, Country"}
+          ? `${locationContext.location.address}` 
+          : "Address"}
       </Text>
       <TouchableOpacity onPress={() => navigation.navigate('EditLocation')}>
         <MaterialCommunityIcons name="pencil" size={24} color="black" />
