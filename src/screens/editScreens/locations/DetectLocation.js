@@ -3,11 +3,14 @@ import { View, Text, StyleSheet, Button } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { useNavigation } from '@react-navigation/native';
+import LocationContext from '../../../context/LocationContext';
+import { useContext } from 'react';
 
 const DetectLocation = () => {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const navigation = useNavigation();
+  const locationContext = useContext(LocationContext);
 
   useEffect(() => {
     (async () => {
@@ -23,8 +26,11 @@ const DetectLocation = () => {
     })();
   }, []);
 
-  const handleConfirmLocation = () => {
-    // Navigate to the ProfileScreen
+  const handleConfirmLocation = async () => {
+    if (location) {
+      let reverseGeocode = await Location.reverseGeocodeAsync(location.coords);
+      locationContext.setLocation(reverseGeocode[0]); // save the reverse geocoded location in the context
+    }
     navigation.navigate('ProfileScreen');
   };
 
@@ -54,7 +60,7 @@ const DetectLocation = () => {
                 latitude: location.coords.latitude,
                 longitude: location.coords.longitude,
               }}
-              title="Your location"
+              title="Your location" 
               description="You are here"
             />
           </MapView>
@@ -72,7 +78,7 @@ const DetectLocation = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'center', // Center the text vertically
     alignItems: 'center',
   },
   map: {
@@ -81,8 +87,8 @@ const styles = StyleSheet.create({
   },
   button: {
     position: 'absolute',
-    top: 10, // Adjust this value as needed
-    right: 10, // Adjust this value as needed
+    top: 10, // 10px from the top
+    right: 10, // 10px from the right
   },
 });
 

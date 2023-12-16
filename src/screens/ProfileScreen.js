@@ -9,25 +9,16 @@ import ProfilePictureContext from '../context/ProfilePictureContext';
 import LocationContext from '../context/LocationContext';
 
 const ProfileScreen = () => {
-  console.log('About You1: ', aboutYou)
   const navigation = useNavigation();
   const route = useRoute();
-  const { location } = useContext(LocationContext);
   const { interests } = useContext(InterestsContext);
   const [aboutYou, setAboutYou] = useState('A brief description');
   const { image, setImage } = useContext(ProfilePictureContext);
-  console.log('About You2: ', aboutYou)
 
   const updateAboutYou = (newAboutYou) => {
     setAboutYou(newAboutYou);
-    console.log('About You3: ', aboutYou)
   };
 
-
-  useEffect(() => {
-    console.log('Location has changed:', location);
-  }, [location]);
-  
   useEffect(() => {
     (async () => {
       if (Constants.platform.ios) {
@@ -39,6 +30,10 @@ const ProfileScreen = () => {
     })();
   }, []);
 
+  
+  const locationContext = React.useContext(LocationContext);
+  console.log('Location in ProfileScreen:', locationContext);
+
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -49,7 +44,7 @@ const ProfileScreen = () => {
 
     console.log(result);
 
-    if (!result.cancelled) {
+    if (!result.canceled) {
       setImage(result.uri);
     }
   };
@@ -70,55 +65,59 @@ const ProfileScreen = () => {
     });
   };
 
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={pickImage}>
-        <Image
-          style={styles.profileImage}
-          source={
-            image
-              ? { uri: image }
-              : {
-                uri: 'https://via.placeholder.com/150',
-              }
-          }
-        />
+  <TouchableOpacity onPress={pickImage}>
+    <Image
+      style={styles.profileImage}
+      source={image ? { uri: image } : { uri: 'https://via.placeholder.com/150' }}
+    />
+  </TouchableOpacity>
+  <Text style={styles.username}>Username</Text>
+  <View style={styles.section}>
+    <Text style={styles.title}>About you</Text>
+    <View style={styles.row}>
+      <Text style={styles.description}>{aboutYou}</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('EditAboutYou', { updateAboutYou: updateAboutYou })}>
+        <MaterialCommunityIcons name="pencil" size={24} color="black" />
       </TouchableOpacity>
-      <Text style={styles.username}>Username</Text>
-      <Text style={styles.title}>About you</Text>
-      <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-        <Text style={styles.description}>{aboutYou}</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('EditAboutYou',
-          { updateAboutYou: updateAboutYou })}>
-          <MaterialCommunityIcons name="pencil" size={24} color="black" />
-        </TouchableOpacity>
-      </View>
-      <Text style={styles.title}>Location</Text>
-      <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-        <Text style={styles.description}>
-          {location ? `${location.latitude}, ${location.longitude}` : 'City, Country'}
-        </Text>
-        <TouchableOpacity onPress={() => navigation.navigate('EditLocation')}>
-          <MaterialCommunityIcons name="pencil" size={24} color="black" />
-        </TouchableOpacity>
-      </View>
-      <Text style={styles.title}>Interest tags</Text>
-      <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-        <Text style={styles.description}>{interests.join(', ')}</Text>
-        <TouchableOpacity onPress={onPressEditInterests}>
-          <MaterialCommunityIcons name="pencil" size={24} color="black" />
-        </TouchableOpacity>
-      </View>
-      <Text style={styles.title}>Social media links</Text>
-      <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-        <Text style={styles.description}>links</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('EditSocialMediaLinks')}>
-          <MaterialCommunityIcons name="pencil" size={24} color="black" />
-        </TouchableOpacity>
-      </View>
     </View>
+  </View>
+  <View style={styles.section}>
+    <Text style={styles.title}>Location</Text>
+    <View style={styles.row}>
+      <Text>
+        {locationContext.location 
+          ? `${locationContext.location.address}` 
+          : "Address"}
+      </Text>
+      <TouchableOpacity onPress={() => navigation.navigate('EditLocation')}>
+        <MaterialCommunityIcons name="pencil" size={24} color="black" />
+      </TouchableOpacity>
+    </View>
+  </View>
+  <View style={styles.section}>
+    <Text style={styles.title}>Interest tags</Text>
+    <View style={styles.row}>
+      <Text style={styles.description}>{interests.join(', ')}</Text>
+      <TouchableOpacity onPress={onPressEditInterests}>
+        <MaterialCommunityIcons name="pencil" size={24} color="black" />
+      </TouchableOpacity>
+    </View>
+  </View>
+  <View style={styles.section}>
+    <Text style={styles.title}>Social media links</Text>
+    <View style={styles.row}>
+      <Text style={styles.description}>links</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('EditSocialMediaLinks')}>
+        <MaterialCommunityIcons name="pencil" size={24} color="black" />
+      </TouchableOpacity>
+    </View>
+  </View>
+</View>
   );
-        };
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -126,6 +125,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#fff',
+    padding: 10,
   },
   profileImage: {
     width: 150,
@@ -134,23 +134,29 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   username: {
-    fontSize: 24,
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  section: {
+    width: '100%',
+    backgroundColor: '#f8f8f8',
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 10,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+  title: {
+    fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 5,
   },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    alignSelf: 'flex-start',
-    marginLeft: 20,
-    marginTop: 20,
-  },
   description: {
-    fontSize: 16,
-    marginTop: 5,
-    marginLeft: 20,
-    marginRight: 5,
+    flex: 1,
   },
 });
 
-export default ProfileScreen;
+export default ProfileScreen;  
