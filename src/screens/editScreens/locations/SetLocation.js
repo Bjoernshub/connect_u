@@ -5,50 +5,47 @@ import { useNavigation } from '@react-navigation/native';
 import Geocoder from 'react-native-geocoding';
 import LocationContext from '../../../context/LocationContext';
 
-Geocoder.init('YOUR_GOOGLE_MAPS_API_KEY'); // Ersetze dies durch deinen tatsächlichen Google Maps API-Schlüssel
 
 const SetLocation = () => {
     const navigation = useNavigation();
     const mapRef = useRef(null);
     const { setLocation } = useContext(LocationContext);
     const [selectedLocation, setSelectedLocation] = useState(null);
-
-
+  
     const handleConfirmLocation = async () => {
-        // Get the current region from the map
-        const region = await mapRef.current.getCamera();
-
-        // Save the selected location
-        setLocation({
-            latitude: region.center.latitude,
-            longitude: region.center.longitude,
-        });
-
-        // Navigate to the ProfileScreen
-        navigation.navigate('ProfileScreen');
+      // Get the current region from the map
+      const region = await mapRef.current.getCamera();
+  
+      // Save the selected location
+      setSelectedLocation({
+        latitude: region.center.latitude,
+        longitude: region.center.longitude,
+      });
     };
 
+    
+  
     useEffect(() => {
-        if (selectedLocation) {
-            // Get the address for the selected location
-            Geocoder.from(selectedLocation.latitude, selectedLocation.longitude)
-                .then(json => {
-                    var addressComponent = json.results[0].formatted_address;
-                    console.log(addressComponent);
-
-                    // Save the selected location with address
-                    setLocation({
-                        latitude: selectedLocation.latitude,
-                        longitude: selectedLocation.longitude,
-                        address: addressComponent,
-                    });
-
-                    // Navigate to the ProfileScreen
-                    navigation.navigate('ProfileScreen');
-                })
-                .catch(error => console.warn(error));
-        }
-    }, [selectedLocation]);
+      if (selectedLocation) {
+        // Get the address for the selected location
+        Geocoder.from(selectedLocation.latitude, selectedLocation.longitude)
+          .then(json => {
+            var addressComponent = json.results[0].formatted_address;
+            console.log(addressComponent);
+  
+            // Save the selected location with address
+            setLocation({
+              latitude: selectedLocation.latitude,
+              longitude: selectedLocation.longitude,
+              address: addressComponent,
+            });
+  
+            // Navigate to the ProfileScreen
+            navigation.navigate('ProfileScreen');
+          })
+          .catch(error => console.warn(error));
+      }
+    }, [selectedLocation]); // Add selectedLocation as a dependency
 
     return (
         <View style={styles.container}>
