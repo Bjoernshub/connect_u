@@ -15,6 +15,7 @@ import ThemeContext from '../context/ThemeContext';
 import { lightTheme, darkTheme } from '../Themes';
 import { Ionicons } from '@expo/vector-icons';
 import Slider from '@react-native-community/slider';
+import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
 const BackgroundImage = ({ children }) => (
   <ImageBackground
@@ -68,6 +69,9 @@ const HomeScreen = ({ navigation }) => {
 
   const [isFilterVisible, setFilterVisible] = useState(false);
   const slideAnim = useRef(new Animated.Value(Dimensions.get('window').width)).current;
+
+  const [minAge, setMinAge] = useState(18);
+  const [maxAge, setMaxAge] = useState(100);
 
   const handleFilterPress = () => {
     setFilterVisible(true);
@@ -174,6 +178,22 @@ const HomeScreen = ({ navigation }) => {
             maximumTrackTintColor="#000000"
           />
           <Text style={{color: 'black'}}>{radius} km</Text>
+          <View style={{borderWidth: 1, borderColor: 'lightgrey', padding: 10, borderRadius: 5, width: '100%', marginTop: 20}}>
+              <Text style={{color: 'black'}}>Age Range</Text>
+              <MultiSlider
+                style={{width: '100%', height: 40}}
+                values={[minAge, maxAge]}
+                sliderLength={280}
+                onValuesChange={values => {setMinAge(values[0]); setMaxAge(values[1]);}}
+                min={18}
+                max={100}
+                step={1}
+                allowOverlap={false}
+                snapped
+                minMarkerOverlapDistance={0}
+              />
+              <Text style={{color: 'black'}}>{minAge} - {maxAge} years</Text>
+          </View>  
           <TouchableOpacity
             style={{ marginTop: 20 }}
             onPress={handleClosePress}
