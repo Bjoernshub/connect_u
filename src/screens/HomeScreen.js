@@ -105,16 +105,24 @@ const HomeScreen = ({ navigation }) => {
 
   const [radius, setRadius] = useState(1);
 
+  const toggleFilter = () => {
+    Animated.timing(slideAnim, {
+      toValue: isFilterVisible ? Dimensions.get('window').width : 0,
+      duration: 500,
+      useNativeDriver: false,
+    }).start(() => setFilterVisible(!isFilterVisible));
+  };
+
   useEffect(() => {
     startAnimation();
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity onPress={handleFilterPress}>
+        <TouchableOpacity onPress={toggleFilter}>
           <Ionicons name="ios-filter" size={24} color={theme.textColor} style={{ marginRight: 20 }} />
         </TouchableOpacity>
       ),
     });
-  }, []);
+  }, [isFilterVisible]);
 
   return (
     <BackgroundImage>
@@ -166,17 +174,21 @@ const HomeScreen = ({ navigation }) => {
       </View>
       {isFilterVisible && (
         <Animated.View style={{ ...styles.modalView, right: slideAnim }}>
-          <Text style={{color: 'black'}}>Show in Radius</Text>
-          <Slider
-            style={{width: 200, height: 40}}
-            minimumValue={1}
-            maximumValue={100}
-            step={1}
-            value={radius}
-            onValueChange={value => setRadius(value)}
-            minimumTrackTintColor="#FFFFFF"
-            maximumTrackTintColor="#000000"
-          />
+           <View style={{borderWidth: 1, borderColor: 'lightgrey', padding: 10, borderRadius: 5, width: '100%', marginTop: 20}}>
+            <Text style={{color: 'black'}}>Show in Radius</Text>
+            <Slider
+              style={{width: '100%', height: 40}}
+              minimumValue={1}
+              maximumValue={100}
+              step={1}
+              value={radius}
+              sliderLength={280}
+              onValueChange={value => setRadius(value)}
+              minimumTrackTintColor='lightgreen'
+              maximumTrackTintColor='lightgreen'
+              thumbTintColor='green' 
+            />
+           </View> 
           <Text style={{color: 'black'}}>{radius} km</Text>
           <View style={{borderWidth: 1, borderColor: 'lightgrey', padding: 10, borderRadius: 5, width: '100%', marginTop: 20}}>
               <Text style={{color: 'black'}}>Age Range</Text>
@@ -185,12 +197,16 @@ const HomeScreen = ({ navigation }) => {
                 values={[minAge, maxAge]}
                 sliderLength={280}
                 onValuesChange={values => {setMinAge(values[0]); setMaxAge(values[1]);}}
-                min={18}
+                min={16}
                 max={100}
                 step={1}
                 allowOverlap={false}
                 snapped
                 minMarkerOverlapDistance={0}
+                trackStyle={{backgroundColor: 'lightgreen'}} 
+                selectedStyle={{backgroundColor: 'lightgreen'}}
+                unselectedStyle={{backgroundColor: 'lightgreen'}}
+                markerStyle={{backgroundColor: 'green'}} 
               />
               <Text style={{color: 'black'}}>{minAge} - {maxAge} years</Text>
           </View>  
