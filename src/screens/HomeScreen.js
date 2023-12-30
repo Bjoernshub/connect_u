@@ -16,6 +16,7 @@ import { lightTheme, darkTheme } from '../Themes';
 import { Ionicons } from '@expo/vector-icons';
 import Slider from '@react-native-community/slider';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
+import { Picker } from '@react-native-picker/picker';
 
 const BackgroundImage = ({ children }) => (
   <ImageBackground
@@ -33,7 +34,7 @@ const HomeScreen = ({ navigation }) => {
 
   const styles = StyleSheet.create({
     container: {
-      alignItems: 'center',
+      //alignItems: 'center',
       backgroundColor: 'transparent',
     },
     text: {
@@ -70,7 +71,7 @@ const HomeScreen = ({ navigation }) => {
   const [isFilterVisible, setFilterVisible] = useState(false);
   const slideAnim = useRef(new Animated.Value(Dimensions.get('window').width)).current;
 
-  const [minAge, setMinAge] = useState(18);
+  const [minAge, setMinAge] = useState(16);
   const [maxAge, setMaxAge] = useState(100);
 
   const handleFilterPress = () => {
@@ -105,6 +106,12 @@ const HomeScreen = ({ navigation }) => {
 
   const [radius, setRadius] = useState(1);
 
+  const [myOnlineStatus, setMyOnlineStatus] = useState(null);
+  const [myVerificationStatus, setMyVerificationStatus] = useState(null);
+
+  const [onlineStatus, setOnlineStatus] = useState("no filter");
+  const [verificationStatus, setVerificationStatus] = useState("allUsers");
+
   const toggleFilter = () => {
     Animated.timing(slideAnim, {
       toValue: isFilterVisible ? Dimensions.get('window').width : 0,
@@ -123,6 +130,8 @@ const HomeScreen = ({ navigation }) => {
       ),
     });
   }, [isFilterVisible]);
+
+  
 
   return (
     <BackgroundImage>
@@ -209,6 +218,30 @@ const HomeScreen = ({ navigation }) => {
                 markerStyle={{backgroundColor: 'green'}} 
               />
               <Text style={{color: 'black'}}>{minAge} - {maxAge} years</Text>
+          </View>
+          <View style={{borderWidth: 1, borderColor: 'lightgrey', padding: 10, borderRadius: 5, width: '100%', marginTop: 20}}>
+            <Text style={{color: 'black'}}>Online Status</Text>
+            <Picker
+              selectedValue={onlineStatus}
+              onValueChange={(itemValue, itemIndex) => setOnlineStatus(itemValue)}
+              style={{backgroundColor: 'white', color: 'black'}}
+            >
+              <Picker.Item label="Somewhen" value="no filter" style={{fontSize: 15}} />
+              <Picker.Item label="Online" value="online" style={{fontSize: 15}} />
+              <Picker.Item label="Recently Online (Today)" value="recentlyOnline" style={{fontSize: 15}} />
+              <Picker.Item label="Online Last 7 Days" value="onlineLast7Days" style={{fontSize: 15}}  />
+            </Picker>
+          </View>
+          <View style={{borderWidth: 1, borderColor: 'lightgrey', padding: 10, borderRadius: 5, width: '100%', marginTop: 20}}>
+            <Text style={{color: 'black'}}>Verification Status</Text>
+            <Picker
+              selectedValue={verificationStatus}
+              onValueChange={(itemValue, itemIndex) => setVerificationStatus(itemValue)}
+              style={{backgroundColor: 'white', color: 'black'}}
+            >
+              <Picker.Item label="All Users" value="allUsers" style={{fontSize: 15}}/>
+              <Picker.Item label="Verified Users Only" value="verifiedUsers" style={{fontSize: 15}}/>
+            </Picker>
           </View>  
           <TouchableOpacity
             style={{ marginTop: 20 }}

@@ -34,6 +34,14 @@ const ProfileScreen = () => {
   const locationContext = React.useContext(LocationContext);
   console.log('Location in ProfileScreen:', locationContext);
 
+  const { location } = useContext(LocationContext);
+
+  let locationString = "undefined";
+  if (location) {
+    locationString = `${location.street} ${location.streetNumber}, ${location.postalCode} ${location.city}, ${location.region}, ${location.country}`;
+  }
+  console.log('Location in ProfileScreen:', locationString);
+
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -65,7 +73,6 @@ const ProfileScreen = () => {
     });
   };
 
-
   return (
     <View style={styles.container}>
   <TouchableOpacity onPress={pickImage}>
@@ -87,11 +94,7 @@ const ProfileScreen = () => {
   <View style={styles.section}>
     <Text style={styles.title}>Location</Text>
     <View style={styles.row}>
-      <Text>
-        {locationContext.location 
-          ? `${locationContext.location.address}` 
-          : "Address"}
-      </Text>
+    <Text style={styles.infoText}>{locationString}</Text>
       <TouchableOpacity onPress={() => navigation.navigate('EditLocation')}>
         <MaterialCommunityIcons name="pencil" size={24} color="black" />
       </TouchableOpacity>

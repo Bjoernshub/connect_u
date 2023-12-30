@@ -29,9 +29,13 @@ const DetectLocation = () => {
   const handleConfirmLocation = async () => {
     if (location) {
       let reverseGeocode = await Location.reverseGeocodeAsync(location.coords);
-      locationContext.setLocation(reverseGeocode[0]); // save the reverse geocoded location in the context
+      updateLocation(reverseGeocode[0]); // save the reverse geocoded location in the context
     }
     navigation.navigate('ProfileScreen');
+  };
+
+  const updateLocation = (newLocation) => {
+    locationContext.setLocation(newLocation);
   };
 
   if (errorMsg) {

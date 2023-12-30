@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, Button, Switch, Image, StyleSheet } from 'react-native';
+import { View, Text, Button, Image, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { RadioButton } from 'react-native-paper';
 
 const EditLocationScreen = () => {
   const navigation = useNavigation();
-  const [isDetectLocation, setIsDetectLocation] = useState(true);
+  const [locationMethod, setLocationMethod] = useState('detect');
 
   const handleSetLocation = () => {
     navigation.navigate('SetLocation');
@@ -19,23 +20,28 @@ const EditLocationScreen = () => {
       <Image
         source={require('../../../assets/LocationBackground.jpg')}
         style={styles.backgroundImage}
+        resizeMode="stretch"
       />
-      <View style={styles.switchContainer}>
-        <Button
-          title="Set Location"
-          onPress={handleSetLocation}
-          disabled={isDetectLocation}
-        />
-        <Switch
-          value={isDetectLocation}
-          onValueChange={(newValue) => setIsDetectLocation(newValue)}
-          style={styles.switch}
-        />
-        <Button
-          title="Detect Location"
-          onPress={handleDetectLocation}
-          disabled={!isDetectLocation}
-        />
+      <View style={styles.radioContainer}>
+        <Text style={styles.heading}>Choose Location Method</Text>
+        <RadioButton.Group onValueChange={newValue => setLocationMethod(newValue)} value={locationMethod}>
+          <View style={styles.radioButton}>
+            <Button
+              title="Set Location"
+              onPress={handleSetLocation}
+              disabled={locationMethod !== 'set'}
+            />
+            <RadioButton value="set" />
+          </View>
+          <View style={styles.radioButton}>
+            <Button
+              title="Detect Location"
+              onPress={handleDetectLocation}
+              disabled={locationMethod !== 'detect'}
+            />
+            <RadioButton value="detect" />
+          </View>
+        </RadioButton.Group>
       </View>
     </View>
   );
@@ -45,26 +51,27 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
   },
   backgroundImage: {
     position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
     width: '100%',
     height: '100%',
   },
-  switchContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-    paddingHorizontal: 20,
+  radioContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    padding: 10,
+    borderRadius: 10,
   },
-  switch: {
-    marginHorizontal: 10,
+  heading: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  radioButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 10,
   },
 });
 
