@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Switch, StyleSheet, Modal, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const NotificationsScreen = () => {
   const [emailUpdates, setEmailUpdates] = useState(false);
@@ -11,6 +12,45 @@ const NotificationsScreen = () => {
   const [snoozeAll, setSnoozeAll] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
+  useEffect(() => {
+    const loadSettings = async () => {
+      try {
+        const savedEmailUpdates = await AsyncStorage.getItem('emailUpdates');
+        console.log('Loaded emailUpdates:', savedEmailUpdates);
+        
+        const savedPushUpdates = await AsyncStorage.getItem('pushUpdates');
+        console.log('Loaded pushUpdates:', savedPushUpdates);
+
+        const savedEmailNewsletters = await AsyncStorage.getItem('emailNewsletters');
+        console.log('Loaded emailNewsletters:', savedEmailNewsletters);
+
+        const savedPushNewsletters = await AsyncStorage.getItem('pushNewsletters');
+        console.log('Loaded pushNewsletters:', savedPushNewsletters);
+
+        const savedEmailPromotions = await AsyncStorage.getItem('emailPromotions');
+        console.log('Loaded emailPromotions:', savedEmailPromotions);
+
+        const savedPushPromotions = await AsyncStorage.getItem('pushPromotions');
+        console.log('Loaded pushPromotions:', savedPushPromotions);
+
+        const savedSnoozeAll = await AsyncStorage.getItem('snoozeAll');
+        console.log('Loaded snoozeAll:', savedSnoozeAll);
+
+        if (savedEmailUpdates !== null) setEmailUpdates(JSON.parse(savedEmailUpdates));
+        if (savedPushUpdates !== null) setPushUpdates(JSON.parse(savedPushUpdates));
+        if (savedEmailNewsletters !== null) setEmailNewsletters(JSON.parse(savedEmailNewsletters));
+        if (savedPushNewsletters !== null) setPushNewsletters(JSON.parse(savedPushNewsletters));
+        if (savedEmailPromotions !== null) setEmailPromotions(JSON.parse(savedEmailPromotions));
+        if (savedPushPromotions !== null) setPushPromotions(JSON.parse(savedPushPromotions));
+        if (savedSnoozeAll !== null) setSnoozeAll(JSON.parse(savedSnoozeAll));
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    loadSettings();
+  }, []);
+
   const handleSnoozeAll = (value) => {
     setSnoozeAll(value);
     setModalVisible(value);
@@ -19,6 +59,50 @@ const NotificationsScreen = () => {
   const handleSnoozeDuration = (duration) => {
     // Handle the snooze duration here
     setModalVisible(false);
+  };
+
+  const saveSetting = async (key, value) => {
+    try {
+      await AsyncStorage.setItem(key, JSON.stringify(value));
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleEmailUpdates = (value) => {
+    console.log('handleEmailUpdates called with:', value);
+    setEmailUpdates(value);
+    saveSetting('emailUpdates', value);
+  };
+  
+  const handlePushUpdates = (value) => {
+    console.log('handlePushUpdates called with:', value);
+    setPushUpdates(value);
+    saveSetting('pushUpdates', value);
+  };
+  
+  const handleEmailNewsletters = (value) => {
+    console.log('handleEmailNewsletters called with:', value);
+    setEmailNewsletters(value);
+    saveSetting('emailNewsletters', value);
+  };
+  
+  const handlePushNewsletters = (value) => {
+    console.log('handlePushNewsletters called with:', value);
+    setPushNewsletters(value);
+    saveSetting('pushNewsletters', value);
+  };
+  
+  const handleEmailPromotions = (value) => {
+    console.log('handleEmailPromotions called with:', value);
+    setEmailPromotions(value);
+    saveSetting('emailPromotions', value);
+  };
+  
+  const handlePushPromotions = (value) => {
+    console.log('handlePushPromotions called with:', value);
+    setPushPromotions(value);
+    saveSetting('pushPromotions', value);
   };
 
   return (
@@ -63,7 +147,7 @@ const NotificationsScreen = () => {
         <Switch 
           disabled={snoozeAll} 
           value={emailUpdates} 
-          onValueChange={setEmailUpdates}
+          onValueChange={handleEmailUpdates}
         />
       </View>
       <View style={styles.row}>
@@ -71,7 +155,7 @@ const NotificationsScreen = () => {
         <Switch 
           disabled={snoozeAll} 
           value={pushUpdates} 
-          onValueChange={setPushUpdates} 
+          onValueChange={handlePushUpdates} 
         />
       </View>
       <View style={styles.row}>
@@ -79,7 +163,7 @@ const NotificationsScreen = () => {
         <Switch 
           disabled={snoozeAll} 
           value={emailNewsletters} 
-          onValueChange={setEmailNewsletters} 
+          onValueChange={handleEmailNewsletters} 
         />
       </View>
       <View style={styles.row}>
@@ -87,7 +171,7 @@ const NotificationsScreen = () => {
         <Switch 
           disabled={snoozeAll} 
           value={pushNewsletters} 
-          onValueChange={setPushNewsletters} 
+          onValueChange={handlePushNewsletters} 
         />
       </View>
       <View style={styles.row}>
@@ -95,7 +179,7 @@ const NotificationsScreen = () => {
         <Switch 
           disabled={snoozeAll} 
           value={emailPromotions}
-          onValueChange={setEmailPromotions} 
+          onValueChange={handleEmailPromotions} 
         />
       </View>
       <View style={styles.row}>
@@ -103,7 +187,7 @@ const NotificationsScreen = () => {
         <Switch 
           disabled={snoozeAll} 
           value={pushPromotions} 
-          onValueChange={setPushPromotions} 
+          onValueChange={handlePushPromotions} 
         />
       </View>
     </View>
