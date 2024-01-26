@@ -15,6 +15,8 @@ import ThemeContext from '../context/ThemeContext';
 import { lightTheme, darkTheme } from '../Themes';
 import { Ionicons } from '@expo/vector-icons';
 import Slider from '@react-native-community/slider';
+import MultiSlider from '@ptomasroos/react-native-multi-slider';
+import { Picker } from '@react-native-picker/picker';
 
 const BackgroundImage = ({ children }) => (
   <ImageBackground
@@ -32,7 +34,7 @@ const HomeScreen = ({ navigation }) => {
 
   const styles = StyleSheet.create({
     container: {
-      alignItems: 'center',
+      //alignItems: 'center',
       backgroundColor: 'transparent',
     },
     text: {
@@ -69,6 +71,9 @@ const HomeScreen = ({ navigation }) => {
   const [isFilterVisible, setFilterVisible] = useState(false);
   const slideAnim = useRef(new Animated.Value(Dimensions.get('window').width)).current;
 
+  const [minAge, setMinAge] = useState(16);
+  const [maxAge, setMaxAge] = useState(100);
+
   const handleFilterPress = () => {
     setFilterVisible(true);
     Animated.timing(slideAnim, {
@@ -101,16 +106,32 @@ const HomeScreen = ({ navigation }) => {
 
   const [radius, setRadius] = useState(1);
 
+  const [myOnlineStatus, setMyOnlineStatus] = useState(null);
+  const [myVerificationStatus, setMyVerificationStatus] = useState(null);
+
+  const [onlineStatus, setOnlineStatus] = useState("no filter");
+  const [verificationStatus, setVerificationStatus] = useState("allUsers");
+
+  const toggleFilter = () => {
+    Animated.timing(slideAnim, {
+      toValue: isFilterVisible ? Dimensions.get('window').width : 0,
+      duration: 500,
+      useNativeDriver: false,
+    }).start(() => setFilterVisible(!isFilterVisible));
+  };
+
   useEffect(() => {
     startAnimation();
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity onPress={handleFilterPress}>
+        <TouchableOpacity onPress={toggleFilter}>
           <Ionicons name="ios-filter" size={24} color={theme.textColor} style={{ marginRight: 20 }} />
         </TouchableOpacity>
       ),
     });
-  }, []);
+  }, [isFilterVisible]);
+
+  
 
   return (
     <BackgroundImage>
@@ -162,18 +183,66 @@ const HomeScreen = ({ navigation }) => {
       </View>
       {isFilterVisible && (
         <Animated.View style={{ ...styles.modalView, right: slideAnim }}>
-          <Text style={{color: 'black'}}>Show in Radius</Text>
-          <Slider
-            style={{width: 200, height: 40}}
-            minimumValue={1}
-            maximumValue={100}
-            step={1}
-            value={radius}
-            onValueChange={value => setRadius(value)}
-            minimumTrackTintColor="#FFFFFF"
-            maximumTrackTintColor="#000000"
-          />
+           <View style={{borderWidth: 1, borderColor: 'lightgrey', padding: 10, borderRadius: 5, width: '100%', marginTop: 20}}>
+            <Text style={{color: 'black'}}>Show in Radius</Text>
+            <Slider
+              style={{width: '100%', height: 40}}
+              minimumValue={1}
+              maximumValue={100}
+              step={1}
+              value={radius}
+              sliderLength={280}
+              onValueChange={value => setRadius(value)}
+              minimumTrackTintColor='lightgreen'
+              maximumTrackTintColor='lightgreen'
+              thumbTintColor='green' 
+            />
+           </View> 
           <Text style={{color: 'black'}}>{radius} km</Text>
+          <View style={{borderWidth: 1, borderColor: 'lightgrey', padding: 10, borderRadius: 5, width: '100%', marginTop: 20}}>
+              <Text style={{color: 'black'}}>Age Range</Text>
+              <MultiSlider
+                style={{width: '100%', height: 40}}
+                values={[minAge, maxAge]}
+                sliderLength={280}
+                onValuesChange={values => {setMinAge(values[0]); setMaxAge(values[1]);}}
+                min={16}
+                max={100}
+                step={1}
+                allowOverlap={false}
+                snapped
+                minMarkerOverlapDistance={0}
+                trackStyle={{backgroundColor: 'lightgreen'}} 
+                selectedStyle={{backgroundColor: 'lightgreen'}}
+                unselectedStyle={{backgroundColor: 'lightgreen'}}
+                markerStyle={{backgroundColor: 'green'}} 
+              />
+              <Text style={{color: 'black'}}>{minAge} - {maxAge} years</Text>
+          </View>
+          <View style={{borderWidth: 1, borderColor: 'lightgrey', padding: 10, borderRadius: 5, width: '100%', marginTop: 20}}>
+            <Text style={{color: 'black'}}>Online Status</Text>
+            <Picker
+              selectedValue={onlineStatus}
+              onValueChange={(itemValue, itemIndex) => setOnlineStatus(itemValue)}
+              style={{backgroundColor: 'white', color: 'black'}}
+            >
+              <Picker.Item label="Somewhen" value="no filter" style={{fontSize: 15}} />
+              <Picker.Item label="Online" value="online" style={{fontSize: 15}} />
+              <Picker.Item label="Recently Online (Today)" value="recentlyOnline" style={{fontSize: 15}} />
+              <Picker.Item label="Online Last 7 Days" value="onlineLast7Days" style={{fontSize: 15}}  />
+            </Picker>
+          </View>
+          <View style={{borderWidth: 1, borderColor: 'lightgrey', padding: 10, borderRadius: 5, width: '100%', marginTop: 20}}>
+            <Text style={{color: 'black'}}>Verification Status</Text>
+            <Picker
+              selectedValue={verificationStatus}
+              onValueChange={(itemValue, itemIndex) => setVerificationStatus(itemValue)}
+              style={{backgroundColor: 'white', color: 'black'}}
+            >
+              <Picker.Item label="All Users" value="allUsers" style={{fontSize: 15}}/>
+              <Picker.Item label="Verified Users Only" value="verifiedUsers" style={{fontSize: 15}}/>
+            </Picker>
+          </View>  
           <TouchableOpacity
             style={{ marginTop: 20 }}
             onPress={handleClosePress}

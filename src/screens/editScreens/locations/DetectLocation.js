@@ -12,6 +12,7 @@ const DetectLocation = () => {
   const navigation = useNavigation();
   const locationContext = useContext(LocationContext);
 
+  // Request location permission and get current location
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -20,18 +21,52 @@ const DetectLocation = () => {
         return;
       }
 
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
-      console.log('Your location:', location);
+      try {
+        let location = await Location.getCurrentPositionAsync({});
+        setLocation(location);
+        console.log('Your location:', location);
+      } catch (error) {
+        console.error("Error getting location: ", error);
+      }
     })();
   }, []);
 
   const handleConfirmLocation = async () => {
-    if (location) {
-      let reverseGeocode = await Location.reverseGeocodeAsync(location.coords);
-      locationContext.setLocation(reverseGeocode[0]); // save the reverse geocoded location in the context
+    try {  
+      if (location) {
+        try {
+          let reverseGeocode = await Location.reverseGeocodeAsync(location.coords);
+          console.log('Reverse geocode result:', reverseGeocode);
+          if (reverseGeocode && reverseGeocode.length > 0) {
+            updateLocation(reverseGeocode[0]); // save the reverse geocoded location in the context
+          } else {
+            console.log('No reverse geocode results'); 
+          }
+        } catch (error) {
+          console.error("Error reverse geocoding location: ", error);
+          // Fallback to raw coordinates
+          updateLocation({
+            address: `Lat: ${location.coords.latitude}, Long: ${location.coords.longitude}`
+          }); // save the raw location in the context
+        }
+      }  
+      navigation.navigate('ProfileScreen');
+    } catch (error) {
+      console.log("Error confirming location: ", error);
     }
-    navigation.navigate('ProfileScreen');
+  };
+
+  // Update location in context
+  const updateLocation = (newLocation) => {
+    // Check if the properties of newLocation are defined
+    if (newLocation.street && newLocation.city && newLocation.region && newLocation.country) {
+      // Create an address string
+      let address = `${newLocation.street}, ${newLocation.city}, ${newLocation.region}, ${newLocation.country}`;
+      locationContext.setLocation({ address });
+    } else {
+      // Set a default value for the address
+      locationContext.setLocation({ address: 'Location not available' });
+    }
   };
 
   if (errorMsg) {

@@ -19,12 +19,17 @@ const ProfileScreen = () => {
     setAboutYou(newAboutYou);
   };
 
+  // Requesting media library permissions on component mount
   useEffect(() => {
     (async () => {
       if (Constants.platform.ios) {
-        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (status !== 'granted') {
-          alert('Sorry, we need camera roll permissions to make this work!');
+        try {
+          const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+          if (status !== 'granted') {
+            alert('Sorry, we need camera roll permissions to make this work!');
+          }
+        } catch (error) {
+          console.error("Error requesting media library permissions", error);
         }
       }
     })();
@@ -32,20 +37,33 @@ const ProfileScreen = () => {
 
   
   const locationContext = React.useContext(LocationContext);
-  console.log('Location in ProfileScreen:', locationContext);
+  console.log('Location in ProfileScreen1:', locationContext);
 
+  // Using context for location
+  const { location } = useContext(LocationContext);
+
+  // Converting location to string
+  let locationString = "undefined";
+  if (location) {
+    locationString = location.address;
+  }
+  console.log('Location in ProfileScreen2:', locationString);
+
+  // Function to pick image from library
   const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+    try {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
 
-    console.log(result);
-
-    if (!result.canceled) {
-      setImage(result.uri);
+      if (!result.canceled) {
+        setImage(result.uri);
+      }
+    } catch (error) {
+      console.error("Error picking image", error);
     }
   };
 
@@ -64,7 +82,6 @@ const ProfileScreen = () => {
       selectedInterests: interests,
     });
   };
-
 
   return (
     <View style={styles.container}>
@@ -87,11 +104,7 @@ const ProfileScreen = () => {
   <View style={styles.section}>
     <Text style={styles.title}>Location</Text>
     <View style={styles.row}>
-      <Text>
-        {locationContext.location 
-          ? `${locationContext.location.address}` 
-          : "Address"}
-      </Text>
+    <Text style={styles.infoText}>{locationString}</Text>
       <TouchableOpacity onPress={() => navigation.navigate('EditLocation')}>
         <MaterialCommunityIcons name="pencil" size={24} color="black" />
       </TouchableOpacity>

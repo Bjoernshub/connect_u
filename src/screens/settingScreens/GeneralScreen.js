@@ -8,18 +8,9 @@ const GeneralScreen = () => {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>General Settings</Text>
-            <View style={styles.row}>
-                <Text>Dark Mode</Text>
-                <Switch value={darkMode} onValueChange={setDarkMode} />
-            </View>
-            <View style={styles.row}>
-                <Text>Notifications</Text>
-                <Switch value={notifications} onValueChange={setNotifications} />
-            </View>
             <Button title="Change Language" onPress={() => { }} />
-            <Button title="Privacy Settings" onPress={() => { }} />
             <Button title="Security Settings" onPress={() => { }} />
-            <Button title="Update Account Information" onPress={() => { }} />
+            <Button title="Delete/Deactivate Account" onPress={() => { }} />
         </View>
     );
 };
