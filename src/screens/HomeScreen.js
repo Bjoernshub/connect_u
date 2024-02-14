@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -8,7 +8,8 @@ import {
   Easing,
   StyleSheet,
   TouchableOpacity,
-  Dimensions
+  Dimensions,
+  BackHandler
 } from 'react-native';
 import ProfilePictureContext from '../context/ProfilePictureContext';
 import ThemeContext from '../context/ThemeContext';
@@ -31,6 +32,22 @@ const BackgroundImage = ({ children }) => (
 const HomeScreen = ({ navigation }) => {
   const { isDarkMode } = useContext(ThemeContext);
   const theme = isDarkMode ? darkTheme : lightTheme;
+
+  const backAction = useCallback(() => {
+      BackHandler.exitApp();
+      return true;
+  }, []);
+
+  useEffect(() => {
+      navigation.addListener('beforeRemove', (e) => {
+          e.preventDefault();
+          backAction();
+      });
+
+      return () => {
+          navigation.removeListener('beforeRemove', backAction);
+      };
+  }, [navigation, backAction]);
 
   const styles = StyleSheet.create({
     container: {

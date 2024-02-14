@@ -1,57 +1,44 @@
-import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeScreen from '../screens/HomeScreen';
-import ProfileWrapper from '../navigation/ProfileWrapper';
-import ChatStackNavigator from '../navigation/ChatStackNavigator';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-
-const Tab = createBottomTabNavigator();
-
-const MyTabs = () => {
-    return (
-        <Tab.Navigator
-            initialRouteName="Home"
-            screenOptions={({ route }) => ({
-                tabBarIcon: ({ focused, color, size }) => {
-                    let iconName;
-
-                    if (route.name === 'Home') {
-                        iconName = focused ? 'home' : 'home-outline';
-                    } else if (route.name === 'Your Profile') {
-                        iconName = focused ? 'account' : 'account-outline';
-                    } else if (route.name === 'Chats') {
-                        iconName = focused ? 'chat' : 'chat-outline';
-                    }
-
-                    // You can return any component that you like here!
-                    return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
-                },
-            })}
-        >
-            <Tab.Screen name="Home" component={HomeScreen} />
-            <Tab.Screen name="Your Profile" component={ProfileWrapper} />
-            <Tab.Screen name="Chats" component={ChatStackNavigator} />
-        </Tab.Navigator>
-    );
-};
+import React, { useState } from 'react';
+import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 
 
 const StartScreen = ({ navigation }) => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handleLogin = () => {
+        console.log(email, password);
+        navigation.navigate('HomeStack');
+    };
+
+    const handleSignUp = () => {
+        navigation.navigate('Register');
+    };
+
     return (
         <View style={styles.container}>
-            <Text>Willkommen bei Connect U!</Text>
-            <Button
-                title="Login"
-                onPress={() => navigation.navigate('Login')}
+            <Text style={styles.title}>Login</Text>
+            <TextInput
+                style={styles.input}
+                placeholder="E-Mail"
+                value={email}
+                onChangeText={setEmail}
             />
-            <Button
-                title="Registration"
-                onPress={() => navigation.navigate('Register')}
+            <TextInput
+                style={styles.input}
+                placeholder="Password"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry
             />
-            <Button
-                title="HomePage"
-                onPress={() => navigation.navigate('Home')}
+            <Button 
+                title="Login" 
+                onPress={handleLogin}
+            />
+            <Text style={styles.text}>or</Text>
+            <Button 
+                title="Sign Up" 
+                onPress={handleSignUp}
             />
         </View>
     );
@@ -61,9 +48,26 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center',
+        padding: 16,
+    },
+    title: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginBottom: 20,
+    },
+    input: {
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        marginBottom: 10,
+        paddingLeft: 8,
+    },
+    text: {
+        fontSize: 20,
+        marginVertical: 20,
+        alignSelf: 'center',
     },
 });
 
-export { StartScreen, MyTabs };
 
+export default StartScreen;

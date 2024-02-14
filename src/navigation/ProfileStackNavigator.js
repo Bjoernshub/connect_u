@@ -39,7 +39,7 @@ const ProfileStackNavigator = () => {
         },
       }}
     >
-      <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+      <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen name="Settings" component={SettingsScreen} />
       <Stack.Screen
         name="EditInterests"
