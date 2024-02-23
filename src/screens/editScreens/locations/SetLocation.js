@@ -54,7 +54,7 @@ const SetLocation = ({ navigation }) => {
             address,
           });
 
-          navigation.navigate('ProfileScreen');
+          navigation.navigate('Profile');
         })
         .catch(error => console.warn(error));
     }

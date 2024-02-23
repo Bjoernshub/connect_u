@@ -37,7 +37,9 @@ const ProfileStackNavigator = () => {
         },
       }}
     >
-      <Stack.Screen name="Profile" component={ProfileScreen} />
+      <Stack.Screen name="Profile">
+        {props => <ProfileScreen {...props} parentNavigation={parentNavigation} />}
+      </Stack.Screen>
       <Stack.Screen name="Settings" component={SettingsScreen} />
       <Stack.Screen
         name="EditInterests"
