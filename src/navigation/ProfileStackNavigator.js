@@ -25,21 +25,15 @@ const ProfileStackNavigator = () => {
   const theme = isDarkMode ? darkTheme : lightTheme;
 
   return (
-    <Stack.Navigator initialRouteName="Profile"
+    <Stack.Navigator
+      initialRouteName="Profile"
       screenOptions={{
-        headerStyle: {
-          backgroundColor: theme.backgroundColor,
-        },
+        headerStyle: { backgroundColor: theme.backgroundColor },
         headerTintColor: theme.textColor,
-        headerTitleStyle: {
-          fontWeight: 'bold',
-          color: theme.textColor,
-        },
+        headerTitleStyle: { fontWeight: 'bold', color: theme.textColor },
       }}
     >
-      <Stack.Screen name="Profile">
-        {props => <ProfileScreen {...props} parentNavigation={parentNavigation} />}
-      </Stack.Screen>
+      <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen name="Settings" component={SettingsScreen} />
       <Stack.Screen
         name="EditInterests"

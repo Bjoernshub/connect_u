@@ -97,12 +97,9 @@ const ProfileScreen = () => {
     <View style={styles.row}>
       <Text style={styles.description}>{aboutYou}</Text>
       <TouchableOpacity 
-      onPress={() => navigation.navigate('ProfileStack', { 
-        screen: 'EditAboutYou',
-        params: {
+        onPress={() => navigation.navigate('EditAboutYou', { 
           updateAboutYou: updateAboutYou
-        }  
-      })}>
+        })}>
         <MaterialCommunityIcons name="pencil" size={24} color="black" />
       </TouchableOpacity>
     </View>
@@ -111,7 +108,7 @@ const ProfileScreen = () => {
     <Text style={styles.title}>Location</Text>
     <View style={styles.row}>
     <Text style={styles.infoText}>{locationString}</Text>
-    <TouchableOpacity onPress={() => navigation.navigate('ProfileStack', { screen: 'EditLocation' })}>
+    <TouchableOpacity onPress={() => navigation.navigate('EditLocation')}>
       <MaterialCommunityIcons name="pencil" size={24} color="black" />
     </TouchableOpacity>
     </View>
@@ -129,7 +126,7 @@ const ProfileScreen = () => {
     <Text style={styles.title}>Social media links</Text>
     <View style={styles.row}>
       <Text style={styles.description}>links</Text>
-      <TouchableOpacity onPress={() => navigation.navigate('ProfileStack', { screen: 'EditSocialMediaLinks' })}>
+      <TouchableOpacity onPress={() => navigation.navigate('EditSocialMediaLinks' )}>
         <MaterialCommunityIcons name="pencil" size={24} color="black" />
       </TouchableOpacity>
     </View>
