@@ -6,13 +6,12 @@ const LoginScreen = ({ navigation }) => {
     const [password, setPassword] = useState('');
 
     const handleLogin = () => {
-        // Hier können Sie die Anmeldungslogik implementieren
         console.log(email, password);
     };
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Anmelden</Text>
+            <Text style={styles.title}>Login</Text>
             <TextInput
                 style={styles.input}
                 placeholder="E-Mail"
@@ -21,13 +20,13 @@ const LoginScreen = ({ navigation }) => {
             />
             <TextInput
                 style={styles.input}
-                placeholder="Passwort"
+                placeholder="Password"
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry
             />
             <Button 
-                title="Anmelden" 
+                title="Login" 
                 onPress={() => navigation.navigate('Home')} />
         </View>
     );

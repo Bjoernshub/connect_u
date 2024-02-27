@@ -33,7 +33,7 @@ const RegistrationScreen = ({ navigation }) => {
                 secureTextEntry
             />
             <Button
-                title="Registrieren"
+                title="Register"
                 onPress={() => navigation.navigate('Home')} />
         </View>
     );

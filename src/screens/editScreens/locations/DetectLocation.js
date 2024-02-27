@@ -50,7 +50,7 @@ const DetectLocation = () => {
           }); // save the raw location in the context
         }
       }  
-      navigation.navigate('ProfileScreen');
+      navigation.navigate('Profile');
     } catch (error) {
       console.log("Error confirming location: ", error);
     }

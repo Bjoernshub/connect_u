@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import ProfileScreen from '../screens/ProfileScreen';
@@ -16,7 +16,6 @@ import PrivacyScreen from '../screens/settingScreens/PrivacyScreen';
 import DetectLocation from '../screens/editScreens/locations/DetectLocation';
 import SetLocation from '../screens/editScreens/locations/SetLocation';
 import { lightTheme, darkTheme } from '../Themes';
-import { useContext } from 'react';
 import ThemeContext from '../context/ThemeContext';
 
 const Stack = createStackNavigator();
@@ -25,21 +24,16 @@ const ProfileStackNavigator = () => {
   const { isDarkMode } = useContext(ThemeContext);
   const theme = isDarkMode ? darkTheme : lightTheme;
 
-
   return (
-    <Stack.Navigator initialRouteName="Profile"
+    <Stack.Navigator
+      initialRouteName="Profile"
       screenOptions={{
-        headerStyle: {
-          backgroundColor: theme.backgroundColor,
-        },
+        headerStyle: { backgroundColor: theme.backgroundColor },
         headerTintColor: theme.textColor,
-        headerTitleStyle: {
-          fontWeight: 'bold',
-          color: theme.textColor,
-        },
+        headerTitleStyle: { fontWeight: 'bold', color: theme.textColor },
       }}
     >
-      <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+      <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen name="Settings" component={SettingsScreen} />
       <Stack.Screen
         name="EditInterests"
@@ -75,21 +69,6 @@ const ProfileStackNavigator = () => {
       />
     </Stack.Navigator>
   );
-      }  
-
-const styles = StyleSheet.create({
-  saveButton: {
-    backgroundColor: '#4a90e2',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 5,
-    marginRight: 10,
-  },
-  saveButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-});
+};
 
 export default ProfileStackNavigator;
