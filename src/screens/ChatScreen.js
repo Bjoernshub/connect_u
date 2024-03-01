@@ -1,19 +1,22 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import ThemeContext from '../context/ThemeContext';
 import { lightTheme, darkTheme } from '../Themes';
 
-const ChatScreen = ({ navigation }) => {
+const ChatScreen = () => {
   const { isDarkMode } = useContext(ThemeContext);
   const theme = isDarkMode ? darkTheme : lightTheme;
+  const navigation = useNavigation();
 
+  useEffect(() => {
   navigation.setOptions({
     headerStyle: {
       backgroundColor: theme.backgroundColor,
     },
     headerTintColor: theme.textColor,
   });
+  }, [theme]);
 
   const [chats, setChats] = useState([
     {
