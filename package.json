@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "type": "module",
     "test": "vitest"
   },
+  "type": "module",
+  
   "dependencies": {
     "@expo/vector-icons": "^13.0.0",
     "@ptomasroos/react-native-multi-slider": "^2.2.2",

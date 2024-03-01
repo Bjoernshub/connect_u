@@ -11,9 +11,9 @@ const mockProfilePictureContextValue = {
   image: 'https://example.com/profile.jpg', // Adjust this value based on your profile picture context structure
 };
 const mockNavigation = {
-  navigate: jest.fn(),
-  addListener: jest.fn().mockImplementation((event, callback) => callback()),
-  removeListener: jest.fn(),
+  navigate: vi.fn(),
+  addListener: vi.fn().mockImplementation((event, callback) => callback()),
+  removeListener: vi.fn(),
 };
 
 describe('HomeScreen', () => {
