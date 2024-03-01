@@ -55,6 +55,7 @@ const DetectLocation = () => {
       console.log("Error confirming location: ", error);
     }
   };
+  
 
   // Update location in context
   const updateLocation = (newLocation) => {
