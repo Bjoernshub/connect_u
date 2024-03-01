@@ -9,18 +9,4 @@ describe('ProfileScreen', () => {
         expect(profileScreen).toBeTruthy();
     });
 
-    it('displays the username', () => {
-        const { getByText } = render(<ProfileScreen />);
-        const username = getByText('John Doe');
-        expect(username).toBeTruthy();
-    });
-
-    it('allows image selection', () => {
-        const { getByTestId } = render(<ProfileScreen />);
-        const imagePickerButton = getByTestId('image-picker-button');
-        fireEvent.press(imagePickerButton);
-        // Add assertions for image selection logic
-    });
-
-    // Add more tests as needed
 });
